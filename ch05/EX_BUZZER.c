@@ -1,7 +1,10 @@
 #include <wiringPi.h>
-#include <stdio.h>
+#include <softTone.h>
 
 #define LED_PWM_PIN		1
+#define BUZ_PIN			0
+
+unsigned int melody[8] = {262, 294, 330, 349, 392, 440, 494, 523};
 
 void setPinMode();
 void runLoop();
@@ -9,27 +12,20 @@ void runLoop();
 int main(void) {
 	wiringPiSetup();
 
-	setPinMode();
+	softToneCreate(BUZ_PIN);
 
 	runLoop();
+
+	softToneStop(BUZ_PIN);
 
 	return 0;
 }
 
-void setPinMode() {
-	pinMode(LED_PWM_PIN, PWM_OUTPUT);
-}
-
 void runLoop() {
 	while(1) {
-		for(int nBright = 0; nBright < 1024; nBright++) {
-			pwmWrite(LED_PWM_PIN, nBright);
-			delay(1);
-		}
-
-		for(int nBright = 1023; nBright >= 0; nBright--) {
-			pwmWrite(LED_PWM_PIN, nBright);
-			delay(1);
+		for(int i = 0; i < 8; i++) {
+			softToneWrite(BUZ_PIN, melody[i]);
+			delay(1000);
 		}
 	}
 }
