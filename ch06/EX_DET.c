@@ -11,7 +11,6 @@
 
 #define PIR_PIN 29
 
-#define DELAY_TIME 1000
 int main(void) {
 	int lcd;
 	wiringPiSetup();
@@ -24,16 +23,14 @@ int main(void) {
 	}
 
 	lcdPosition(lcd, 0, 0); //Position cursor on the first line in the first column.
-	lcdPuts(lcd, "HELLO WORLD");
 
 	while(1) {
 		if(digitalRead(PIR_PIN)) lcdPuts(lcd, "Detected");
 		else lcdPuts(lcd, "------");
 
-		delay(DELAY_TIME);
+		delay(1000);
 		lcdClear(lcd);
 	}
-
 
 	return 0;
 }
